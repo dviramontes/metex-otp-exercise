@@ -1,5 +1,13 @@
 defmodule Metex.Worker do
 
+  def loop do
+    receive do
+      {sender_pid, location} -> send(sender_pid, {:ok, temp_of(location)})
+      err -> IO.puts "Dont know how to process this message.. #{err}"
+    end
+    loop
+  end
+
   defp apikey do
    System.get_env("OPEN_WEATHER_MAP_API_KEY")
   end
